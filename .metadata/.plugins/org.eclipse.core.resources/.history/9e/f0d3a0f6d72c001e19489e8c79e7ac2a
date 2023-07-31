@@ -1,0 +1,9 @@
+package dynamic_beat_3;
+
+import javazoom.jl.player.Player;
+
+public class Music extends Thread{ //thread란 하나의 작은 프로그램
+	
+	private Player player; //라이브러리를 말함
+	
+}

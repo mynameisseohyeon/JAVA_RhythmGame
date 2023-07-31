@@ -1,0 +1,8 @@
+package dynamic_beat_1;
+
+public class DynamicBeat extends JFrame{ //그래픽 기반
+
+	public DynamicBeat() {
+		setTitle("Dynamic Beat");
+	}
+}

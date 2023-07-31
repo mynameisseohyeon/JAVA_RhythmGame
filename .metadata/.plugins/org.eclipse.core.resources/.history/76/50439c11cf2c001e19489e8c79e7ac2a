@@ -1,0 +1,10 @@
+package dynamic_beat_1;
+
+import javax.swing.JFrame; //라이브러리 import 단축키 ctrl + shift + O
+
+public class DynamicBeat extends JFrame{ //그래픽 기반
+
+	public DynamicBeat() {
+		setTitle("Dynamic Beat");
+	}
+}

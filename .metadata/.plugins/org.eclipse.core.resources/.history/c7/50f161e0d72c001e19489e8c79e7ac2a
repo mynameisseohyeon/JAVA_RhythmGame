@@ -1,0 +1,5 @@
+package dynamic_beat_3;
+
+public class Music extends Thread{ //thread란 하나의 작은 프로그램
+	
+}

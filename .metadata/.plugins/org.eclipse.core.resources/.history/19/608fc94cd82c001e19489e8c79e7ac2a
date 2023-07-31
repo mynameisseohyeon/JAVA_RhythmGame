@@ -1,0 +1,17 @@
+package dynamic_beat_3;
+
+import javazoom.jl.player.Player;
+
+public class Music extends Thread{ //thread란 하나의 작은 프로그램
+	
+	private Player player; //라이브러리를 말함
+	private boolean isLoop; //mp3파일이 무한 반복인지 한 번만 반복인지
+	private File file;
+	private FileInputStream fis;
+	private BufferedInputStream bis;
+	
+	public Music(String name, boolean isLoop ) {
+		
+	}
+	
+}

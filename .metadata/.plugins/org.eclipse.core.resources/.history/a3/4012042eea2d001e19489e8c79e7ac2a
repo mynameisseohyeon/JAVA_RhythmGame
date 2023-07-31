@@ -1,0 +1,36 @@
+package dynamic_beat_3;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+
+import javazoom.jl.player.Player;
+
+public class Music extends Thread{ //thread란 하나의 작은 프로그램
+	
+	private Player player; //라이브러리를 말함
+	private boolean isLoop; //mp3파일이 무한 반복인지 한 번만 반복인지
+	private File file;
+	private FileInputStream fis;
+	private BufferedInputStream bis;
+	
+	public Music(String name, boolean isLoop ) {
+		try {
+			this.isLoop = isLoop;
+			file = new File(Main.class.getResource("./music/IntroMusic.mp3").toURI());
+			fis = new FileInputStream(file);
+			bis = new BufferedInputStream(fis);
+			player = new Player(bis);
+		} catch (Exception e) { //예외 처리를 위해 사용
+			System.out.println(e.getMessage());
+		}
+	}
+	public int getTime() {
+		if (player == null)  //0.001초 단위까지 알려줌
+			return 0;
+		return player.getPosition();
+	}
+	public void close() { //언제 실행되던 항상 종료할 수 있게 해줌
+		
+	}
+}

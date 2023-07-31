@@ -1,0 +1,59 @@
+package dynamic_beat_4;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame; //라이브러단축키 ctrl + shift + O
+import javax.swing.JLabel;
+
+public class DynamicBeat extends JFrame { // 그래픽 기반
+
+	private Image screenImage;
+	private Graphics screenGraphic; // 더블 버퍼링을 위해 전체 화면의 이미지를 담는 두 인스턴스
+
+	private Image IntroBackground = new ImageIcon(Main.class.getResource("../images/IntroBackground.jpg")).getImage();
+	// 메인페이지의 위치를 기반으로 해서 IntroBackground라는 이름의 이미지 변수에 초기화
+	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
+	private JButton exitButton = new JButton(new ImageIcon(Main.class.getResource("../images/exitButtonBasic.jpg")));
+//	private JButton exitButtonEnter = new JButton(
+//			new ImageIcon(Main.class.getResource("../images/exitButtonEnter.jpg")));
+
+	public DynamicBeat() {
+		setUndecorated(true);
+		setTitle("Dynamic Beat");
+		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT); // 1280 * 720
+		setResizable(false); // 사용자가 인위적으로 화면을 줄일 수 없도록
+		setLocationRelativeTo(null); // 실행 시 만든 화면창이 컴퓨터 정중앙에 위치하도록
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 게임창 종료 시 전체 프로그램 종료를 알림
+		setVisible(true); // 만든 게임창이 출력되도록
+		setBackground(new Color(0, 0, 0, 0)); // paintColor 시 회색이 아닌 하얀색 출력
+		setLayout(null); // 버튼 혹은 JLabel을 했을 시에 그 위치 그대로 적용
+
+		menuBar.setBounds(0, 0, 1280, 30); // 위치와 크기를 정해줌
+		add(menuBar);
+
+		exitButton.setBounds(50, 50, 30, 30);
+		exitButton.setBorderPainted(false);
+		add(exitButton);
+
+		Music IntroMusic = new Music("IntroMusic.mp3", true); // 프로그램 시작 시 음악이 무한정 반복
+		IntroMusic.start();
+	}
+
+	public void paint(Graphics g) {
+		screenImage = createImage(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT); // 프로그램 화면 만큼 이미지를 생성
+		screenGraphic = screenImage.getGraphics(); // screenGraphic객체를 통해 이미지를 얻어온다
+		screenDraw(screenGraphic);
+		g.drawImage(screenImage, 0, 0, null);
+	}
+
+	public void screenDraw(Graphics g) { // 프로그램이 종료되기 전까지 해당 작업을 계속 반복
+		g.drawImage(IntroBackground, 0, 0, null); // 0, 0 위치에 그려줌
+		paintComponents(g); // JLabel과 같은 요소를 JFrame안에 추가해주면 그려주는 것 / 메뉴 바의 경우 항상 존재하는 이미지이기 때문에 paint를
+							// 이용하였다
+		this.repaint(); // paint 함수를 불러옴
+	}
+}
