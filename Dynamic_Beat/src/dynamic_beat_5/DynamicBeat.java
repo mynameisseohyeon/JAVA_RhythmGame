@@ -18,14 +18,20 @@ public class DynamicBeat extends JFrame { // 그래픽 기반
 	private Image screenImage;
 	private Graphics screenGraphic; // 더블 버퍼링을 위해 전체 화면의 이미지를 담는 두 인스턴스
 
-	private Image IntroBackground = new ImageIcon(Main.class.getResource("../images/IntroBackground.jpg")).getImage();
-	// 메인페이지의 위치를 기반으로 해서 IntroBackground라는 이름의 이미지 변수에 초기화
+	private Image background = new ImageIcon(Main.class.getResource("../images/IntroBackground.jpg")).getImage();
+	// 메인페이지의 위치를 기반으로 해서 background라는 이름의 이미지 변수에 초기화
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
 	
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/exitButtonBasic.jpg"));
 	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEnter.jpg"));
-
+	private ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../images/startButtonBasic.png"));
+	private ImageIcon  startButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/startButtonEntered.png"));
+	private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../images/quitButtonBasic.png"));
+	private ImageIcon quitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/quitButtonEntered.png"));
+	
 	private JButton exitButton = new JButton(exitButtonBasicImage); //버튼의 기본값으로 Basic버튼을 가져옴
+	private JButton startButton = new JButton(startButtonBasicImage); 
+	private JButton quitButton = new JButton(quitButtonBasicImage); 
 	
 	private int mouseX, mouseY; //프로그램 안에서의 마우스 위치값
 	
@@ -88,11 +94,75 @@ public class DynamicBeat extends JFrame { // 그래픽 기반
 			}
 		});
 		
-		add(exitButton);
+		add(exitButton); //exitButton
 
 		Music IntroMusic = new Music("IntroMusic.mp3", true); // 프로그램 시작 시 음악이 무한정 반복
 		IntroMusic.start();
 		add(menuBar);
+
+	
+		startButton.setBounds(60, 430, 400, 100); //x, y좌표
+		startButton.setBorderPainted(false);
+		startButton.setContentAreaFilled(false);
+		startButton.setFocusPainted(false);
+		startButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) { //마우스가 시작하기에 올라왔을 경우 이벤트 발생
+				startButton.setIcon(startButtonEnteredImage); //버튼을 활성화된 이미지로 교체
+				startButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); //마우스가 손가락 모양으로 바뀜
+				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false); //버튼 클릭 bgm 재생
+				buttonPressedMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) { //마우스가 닫기 버튼에 있지 않은 경우
+				startButton.setIcon(startButtonBasicImage); //비활성화 버튼 이미지로 교체
+				startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); //마우스가 원랴 상태로 돌아오도록
+			}
+			@Override
+			public void mousePressed (MouseEvent e) { //마우스가 닫기 버튼을 클릭했을 경우
+				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false); //버튼 클릭 bgm 재생
+				buttonPressedMusic.start(); 
+				//시작하기 버튼 클릭 시
+				startButton.setVisible(false); //시작하기 버튼이 보이지 않도록
+				quitButton.setVisible(false); //종료하기 버튼이 보이지 않도록
+				background = new ImageIcon(Main.class.getResource("../images/mainBackground.jpg")).getImage();
+			}
+		});
+		
+		add(startButton); //startButton
+		
+
+		quitButton.setBounds(60, 560, 400, 100); //x, y좌표
+		quitButton.setBorderPainted(false);
+		quitButton.setContentAreaFilled(false);
+		quitButton.setFocusPainted(false);
+		quitButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) { //마우스가 시작하기에 올라왔을 경우 이벤트 발생
+				quitButton.setIcon(quitButtonEnteredImage); //버튼을 활성화된 이미지로 교체
+				quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); //마우스가 손가락 모양으로 바뀜
+				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false); //버튼 클릭 bgm 재생
+				buttonPressedMusic.start();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) { //마우스가 닫기 버튼에 있지 않은 경우
+				quitButton.setIcon(quitButtonBasicImage); //비활성화 버튼 이미지로 교체
+				quitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); //마우스가 원랴 상태로 돌아오도록
+			}
+			@Override
+			public void mousePressed (MouseEvent e) { //마우스가 닫기 버튼을 클릭했을 경우
+				Music buttonPressedMusic = new Music("buttonPressedMusic.mp3", false); //버튼 클릭 bgm 재생
+				buttonPressedMusic.start();
+				try { //정상적으로 bgm이 작동하도록 예외처리
+					Thread.sleep(1000);
+				} catch (InterruptedException ex){
+					ex.printStackTrace();
+				}
+				System.exit(0); //프로그램 종료
+			}
+		});
+		
+		add(quitButton); //quitButton
 	}
 
 	public void paint(Graphics g) {
@@ -103,7 +173,7 @@ public class DynamicBeat extends JFrame { // 그래픽 기반
 	}
 
 	public void screenDraw(Graphics g) { // 프로그램이 종료되기 전까지 해당 작업을 계속 반복
-		g.drawImage(IntroBackground, 0, 0, null); // 0, 0 위치에 그려줌
+		g.drawImage(background, 0, 0, null); // 0, 0 위치에 그려줌
 		paintComponents(g); // JLabel과 같은 요소를 JFrame안에 추가해주면 그려주는 것 / 메뉴 바의 경우 항상 존재하는 이미지이기 때문에 paint를
 							// 이용하였다
 		this.repaint(); // paint 함수를 불러옴
