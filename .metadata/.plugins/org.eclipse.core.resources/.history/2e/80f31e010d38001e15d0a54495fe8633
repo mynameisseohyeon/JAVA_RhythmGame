@@ -1,0 +1,12 @@
+package dynamic_beat_7;
+
+public class Track { //해당 곡의 이미지, 제목, 음원파일의 정보가 들어감
+	
+	private String titleImage; //제목 부분 이미지
+	private String startImage; //게임 선택 창 표지 이미지
+	private String gameImage; //해당 곡을 실행했을 때 표지 이미지
+	private String startMusic; //게임 선택 창 출력
+	private String gameMusic; //해당 곡을 실행했을 때 출력
+	
+	
+}

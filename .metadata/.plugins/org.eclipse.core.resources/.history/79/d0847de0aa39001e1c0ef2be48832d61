@@ -1,0 +1,55 @@
+package dynamic_beat_8;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+
+import javazoom.jl.player.Player;
+
+public class Music extends Thread {
+	
+	private Player player;  // 음악 재생을 위한 Player 객체
+	private boolean isLoop;  // 음악 무한 반복 여부를 나타내는 플래그
+	private File file;  // 음악 파일을 가리키는 File 객체
+	private FileInputStream fis;  // 파일 입력 스트림
+	private BufferedInputStream bis;  // 버퍼링된 입력 스트림
+	
+	public Music(String name, boolean isLoop) {
+		try {
+			this.isLoop = isLoop;
+			file = new File(Main.class.getResource("../music/" + name).toURI());  // 음악 파일 경로 설정
+			fis = new FileInputStream(file);
+			bis = new BufferedInputStream(fis);
+//			player = new Player(bis);  // Player 객체 초기화. 이 부분이 주석 처리되었습니다.
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public int getTime() {
+		if (player == null)
+			return 0;
+		return player.getPosition();  // 현재 재생 시간을 반환하는 메서드
+	}
+	
+	public void close() {
+		isLoop = false;  // 음악 재생 루프를 종료하기 위해 플래그를 변경
+//		player.close();  // Player 객체를 닫음. 이 부분이 주석 처리되었습니다.
+		this.interrupt();  // 스레드를 종료하기 위해 인터럽트 발생
+	}
+	
+	@Override
+	public void run() {
+		try {
+			do {
+				player.play();  // 음악을 재생합니다.
+				fis = new FileInputStream(file);
+				bis = new BufferedInputStream(fis);
+				player = new Player(bis);  // Player 객체를 새로 초기화하여 음악을 재생합니다.
+			} while (isLoop);  // isLoop 값이 true인 동안 무한 반복
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+}

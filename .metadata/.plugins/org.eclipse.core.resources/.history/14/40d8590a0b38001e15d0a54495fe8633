@@ -1,0 +1,7 @@
+package dynamic_beat_7;
+
+public class Track { //해당 곡의 이미지, 제목, 음원파일의 정보가 들어감
+	
+	
+
+}
